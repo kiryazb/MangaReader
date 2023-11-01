@@ -11,4 +11,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', RedirectView.as_view(url='home/', permanent=False)),
     path('home/', include('home.urls')),
+    path('manga-list/', include('manga_list.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
