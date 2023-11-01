@@ -1,0 +1,20 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Work List</h1>
+
+    {% if all_work %}
+    <ul>
+
+      {% for work in all_work %}
+      <li>
+        <a href="{{ work.get_absolute_url }}">{{ work.title }}</a> ({{book.author}})
+      </li>
+      {% endfor %}
+
+    </ul>
+
+    {% else %}
+      <p>There are no works in the library.</p>
+    {% endif %}
+{% endblock %}

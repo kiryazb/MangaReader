@@ -1,0 +1,49 @@
+        .left-top-button {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            width: 170px;
+            height: 50px;
+            left: 10px;
+            top: 20px;
+        }
+
+        .right-top-button-login {
+            position: absolute;
+            right: 150px;
+            top: 20px;
+        }
+
+        .right-top-button-register {
+            position: absolute;
+            right: 50px;
+            top: 20px;
+        }
+
+        .popup {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .popup-button {
+            display: block;
+            margin: 5px;
+        }
+
+        #popup1 {
+            left: 660px;
+            top: 40px;
+        }
+
+        #popup2 {
+            left: 740px;
+            top: 40px;
+        }
+
+        #popup3 {
+            left: 820px;
+            top: 40px;
+        }
