@@ -9,5 +9,4 @@ from . import views
 
 urlpatterns = [
     path('', views.home_page, name='home_page'),
-    path('', views.WorkListView.as_view, name='all_work')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

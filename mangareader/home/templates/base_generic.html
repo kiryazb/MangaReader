@@ -26,14 +26,18 @@
         <button id="btn3">Кнопка 3</button>
     </div>
     <div id="popup1" class="popup">
-    <button class="popup-button">1</button>
-    <button class="popup-button">2</button>
-    <button class="popup-button">3</button>
+        <a href="{% url 'manga-list' %}?type=1" class="popup-button">Манга</a>
+            <a href="{% url 'manga-list' %}?type=2" class="popup-button">Манхва</a>
     </div>
     <div id="popup2" class="popup">
     <button class="popup-button">4</button>
     <button class="popup-button">5</button>
     <button class="popup-button">6</button>
+    </div>
+    <div id="popup3" class="popup">
+    <button class="popup-button">7</button>
+    <button class="popup-button">8</button>
+    <button class="popup-button">9</button>
     </div>
     <script>
         document.getElementById("btn1").addEventListener("click", function () {
@@ -53,7 +57,17 @@
                 list2.style.display = "none";
             }
         });
+        document.getElementById("btn3").addEventListener("click", function () {
+            var list2 = document.getElementById("popup3");
+            if (list2.style.display === "none" || list2.style.display === "") {
+                list2.style.display = "block";
+            } else {
+                list2.style.display = "none";
+            }
+        });
     </script>
+    {% endblock %}
+    {% block content %}
     {% endblock %}
 </body>
 </html>
