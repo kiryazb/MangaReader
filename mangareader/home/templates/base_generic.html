@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block title %}<title>MangaReader</title>{% endblock %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Добавление дополнительного статического CSS файла -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+</head>
+<body>
+    {% block main_page %}
+    <a href="{% url 'home_page' %}" class="left-top-button">MangaReader</a>
+    <button class="right-top-button-login">вход</button>
+    <button class="right-top-button-register">регистрация</button>
+    <div style="text-align: center; padding: 10px;">
+        <button id="btn1">Кнопка 1</button>
+        <button id="btn2">Кнопка 2</button>
+        <button id="btn3">Кнопка 3</button>
+    </div>
+    <div id="popup1" class="popup">
+    <a href="{% url 'all_work' %}" class="popup-button">Манга</a>
+    <button class="popup-button">Манхва</button>
+    </div>
+    <div id="popup2" class="popup">
+    <button class="popup-button">4</button>
+    <button class="popup-button">5</button>
+    <button class="popup-button">6</button>
+    </div>
+    <div id="popup3" class="popup">
+    <button class="popup-button">7</button>
+    <button class="popup-button">8</button>
+    <button class="popup-button">9</button>
+    </div>
+    <script>
+        document.getElementById("btn1").addEventListener("click", function () {
+            var list1 = document.getElementById("popup1");
+            if (list1.style.display === "none" || list1.style.display === "") {
+                list1.style.display = "block";
+            } else {
+                list1.style.display = "none";
+            }
+        });
+
+        document.getElementById("btn2").addEventListener("click", function () {
+            var list2 = document.getElementById("popup2");
+            if (list2.style.display === "none" || list2.style.display === "") {
+                list2.style.display = "block";
+            } else {
+                list2.style.display = "none";
+            }
+        });
+        document.getElementById("btn3").addEventListener("click", function () {
+            var list2 = document.getElementById("popup3");
+            if (list2.style.display === "none" || list2.style.display === "") {
+                list2.style.display = "block";
+            } else {
+                list2.style.display = "none";
+            }
+        });
+    </script>
+    {% endblock %}
+    <div class="col-sm-10" style="height: 50vh; display: flex; justify-content: center; align-items: center;">
+    {% block content %}{% endblock %}
+</div>
+    </div>
+</body>
+</html>
