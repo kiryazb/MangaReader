@@ -16,3 +16,6 @@ class MangaListView(generic.ListView):
             return ["manga_list/manga_list.html"]
         elif work_type == '2':
             return ["manga_list/manhwa_list.html"]
+
+    def get_queryset(self):
+        return Work.objects.order_by('title')
