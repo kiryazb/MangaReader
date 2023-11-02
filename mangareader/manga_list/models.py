@@ -27,7 +27,7 @@ class Imprint(models.Model):
 
 
 class Work(models.Model):
-    title = models.CharField(max_length=200, null=True)
+    title = models.CharField(max_length=200, null=True, unique=True)
     type = models.ForeignKey(Type, on_delete=models.SET_NULL, null=True)
     release_year = models.IntegerField()
 
@@ -48,4 +48,9 @@ class Work(models.Model):
     chapter_count = models.IntegerField()
 
     def get_absolute_url(self):
-        return reverse('work-detail', args=[str(self.id)])
+        return reverse('work-detail', args=[str(self.title)])
+
+    def save(self, *args, **kwargs):
+        # Удаление пробелов из значения поля name перед сохранением
+        self.title = self.title.replace(" ", "_")
+        super(Work, self).save(*args, **kwargs)

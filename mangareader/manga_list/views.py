@@ -19,3 +19,9 @@ class MangaListView(generic.ListView):
 
     def get_queryset(self):
         return Work.objects.order_by('title')
+
+
+class MangaDetailView(generic.DetailView):
+    slug_field = 'title'
+    model = Work
+    template_name = "manga_list/manga_info.html"
