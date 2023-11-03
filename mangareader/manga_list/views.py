@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from django.views import generic
 
-from .models import Work
+from manga_info.models import Work
 
 
 class MangaListView(generic.ListView):
@@ -19,9 +19,3 @@ class MangaListView(generic.ListView):
 
     def get_queryset(self):
         return Work.objects.order_by('title')
-
-
-class MangaDetailView(generic.DetailView):
-    slug_field = 'title'
-    model = Work
-    template_name = "manga_list/manga_info.html"

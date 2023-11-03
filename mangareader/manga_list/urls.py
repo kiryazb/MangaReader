@@ -9,5 +9,5 @@ from . import views
 
 urlpatterns = [
     path('', views.MangaListView.as_view(), name='manga-list'),
-    path('<slug:slug>', views.MangaDetailView.as_view(), name='work-detail'),
+    path('', include("manga_info.urls")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
