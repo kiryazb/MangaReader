@@ -18,8 +18,13 @@
 <body>
     {% block main_page %}
     <a href="{% url 'home_page' %}" class="left-top-button">MangaReader</a>
-    <button class="right-top-button-login">вход</button>
+    {% if user.is_authenticated %}
+    <a href="{% url 'logout' %}" class="right-top-button-login">выход</a>
+    <a href="#" class="right-top-button-register">{{ user.username }}</a>
+    {% else %}
+    <a href="{% url 'login' %}" class="right-top-button-login">вход</a>
     <a href="{% url 'register' %}" class="right-top-button-register">регистрация</a>
+    {% endif %}
     <div style="text-align: center; padding: 10px;">
         <button id="btn1">Кнопка 1</button>
         <button id="btn2">Кнопка 2</button>
