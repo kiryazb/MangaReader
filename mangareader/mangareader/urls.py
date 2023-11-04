@@ -20,4 +20,5 @@ urlpatterns = [
     path('register/', register, name='register'),
     path('login/', custom_login, name='login'),
     path('logout/', custom_logout, name='logout'),
+    path('profile/', include('user.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
