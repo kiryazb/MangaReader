@@ -12,7 +12,9 @@ def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            CustomUser.objects.create_user(username=username, password=password)
             return redirect('/home/')
     else:
         form = RegistrationForm()
