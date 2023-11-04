@@ -2,13 +2,13 @@
 
 {% block content %}
   <h1>Title: {{ work.title }}</h1>
-
+<a href="?section=chapters">Главы</a>
   <p><strong>Тип:</strong> {{ work.type }}</p>
   <p><strong>Год релиза:</strong> {{ work.release_year }}</p>
   <p><strong>Статус тайтла:</strong> {{ work.work_status }}</p>
   <p><strong>Author:</strong> <a href="">{{ work.author }}</a></p> <!-- author detail link not yet defined -->
   <p><strong>Издательство:</strong> {% for imprint in work.imprint.all %}{{ imprint }} {% endfor %}</p>
   <p><strong>Возрастной рейтинг:</strong> {{ work.age_rating }}</p>
-  <p><strong>Загружено глав:</strong> {{ work.chapter_count }}</p>
+  <p><strong>Количество глав:</strong> {{ work.chapter.count }}</p>
   </div>
 {% endblock %}

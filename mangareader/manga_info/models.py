@@ -26,6 +26,13 @@ class Imprint(models.Model):
         return f'{self.name}'
 
 
+class Chapter(models.Model):
+    title = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.title
+
+
 class Work(models.Model):
     title = models.CharField(max_length=200, null=True, unique=True)
     type = models.ForeignKey(Type, on_delete=models.SET_NULL, null=True)
@@ -45,7 +52,7 @@ class Work(models.Model):
 
     age_rating = models.IntegerField()
 
-    chapter_count = models.IntegerField()
+    chapter = models.ManyToManyField(Chapter)
 
     def get_absolute_url(self):
         return reverse('work-detail', args=[str(self.title)])
@@ -54,4 +61,3 @@ class Work(models.Model):
         # Удаление пробелов из значения поля name перед сохранением
         self.title = self.title.replace(" ", "_")
         super(Work, self).save(*args, **kwargs)
-

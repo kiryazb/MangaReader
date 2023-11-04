@@ -1,9 +1,10 @@
 from django.contrib import admin
 
-from .models import Type, Author, Imprint, Work
+from .models import Type, Author, Imprint, Work, Chapter
 
 admin.site.register(Type)
 admin.site.register(Imprint)
+admin.site.register(Chapter)
 
 
 @admin.register(Author)
