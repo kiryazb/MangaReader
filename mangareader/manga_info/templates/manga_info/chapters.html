@@ -1,7 +1,9 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+<div style="text-align: center; margin-top: 100px;">
 {% for chapter in work.chapter.all %}
-    <a href="">chapter.title</a>
+    <p><a href="url ''">{{ chapter.title }}</a></p>
 {% endfor %}
+<div>
 {% endblock %}

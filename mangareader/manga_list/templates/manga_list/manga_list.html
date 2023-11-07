@@ -1,6 +1,7 @@
 {% extends "list_template.html" %}
 
 {% block statements %}
+<h1>Manga list</h1>
 {%if work.type|lower == "manga" %}
 <li class="work-item">
     <a href=" {{ work.get_absolute_url }} ">{{ work.title }}</a> ({{ work.author }})

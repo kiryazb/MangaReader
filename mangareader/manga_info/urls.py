@@ -10,5 +10,6 @@ from .import views
 
 
 urlpatterns = [
-    path('<slug:slug>', views.MangaDetailView.as_view(), name='work-detail'),
+    path('', views.MangaDetailView.as_view(), name='work-detail'),
+    #create path to chapter
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
