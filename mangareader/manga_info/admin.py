@@ -4,7 +4,13 @@ from .models import Type, Author, Imprint, Work, Chapter
 
 admin.site.register(Type)
 admin.site.register(Imprint)
-admin.site.register(Chapter)
+
+
+class ChapterAdmin(admin.ModelAdmin):
+    readonly_fields = ('id',)
+
+
+admin.site.register(Chapter, ChapterAdmin)
 
 
 @admin.register(Author)
@@ -15,4 +21,4 @@ class AuthorAdmin(admin.ModelAdmin):
 @admin.register(Work)
 class WorkAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'type')
-
+    prepopulated_fields = {'slug': ('title',)}

@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.urls import reverse
+from django.utils.text import slugify
 
 
 class Type(models.Model):
@@ -28,13 +29,16 @@ class Imprint(models.Model):
 
 class Chapter(models.Model):
     title = models.CharField(max_length=50)
+    chapter = models.IntegerField(default=0)
+    image = models.ImageField(upload_to='chapter_images/', default=0)
 
     def __str__(self):
         return self.title
 
 
 class Work(models.Model):
-    title = models.CharField(max_length=200, null=True, unique=True)
+    title = models.CharField(max_length=200, unique=True, null=True)
+    slug = models.SlugField(max_length=255, unique=True)
     type = models.ForeignKey(Type, on_delete=models.SET_NULL, null=True)
     release_year = models.IntegerField()
 
@@ -55,9 +59,9 @@ class Work(models.Model):
     chapter = models.ManyToManyField(Chapter)
 
     def get_absolute_url(self):
-        return reverse('work-detail', args=[str(self.title)])
+        return reverse('work-detail', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
-        # Удаление пробелов из значения поля name перед сохранением
-        self.title = self.title.replace(" ", "_")
+        if not self.slug:
+            self.slug = slugify(self.title)
         super(Work, self).save(*args, **kwargs)

@@ -3,7 +3,7 @@
 {% block content %}
 <div style="text-align: center; margin-top: 100px;">
 {% for chapter in work.chapter.all %}
-    <p><a href="url ''">{{ chapter.title }}</a></p>
+        <p><a href=" {% url 'chapter-detail' work.slug chapter.chapter %} ">{{ chapter.title }}</a></p>
 {% endfor %}
-<div>
+</div>
 {% endblock %}
