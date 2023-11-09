@@ -27,13 +27,18 @@ class Imprint(models.Model):
         return f'{self.name}'
 
 
+def get_upload_path(instance, filename):
+    return f'chapters_scans/{instance.work.slug}/chapter_{instance.chapter}/{filename}'
+
+
 class Chapter(models.Model):
     title = models.CharField(max_length=50)
     chapter = models.IntegerField(default=0)
-    image = models.ImageField(upload_to='chapter_images/', default=0)
+    work = models.ForeignKey('Work', related_name='chapters', on_delete=models.CASCADE, default='')
+    image = models.ImageField(upload_to=get_upload_path, default='defalut.jpg')
 
     def __str__(self):
-        return self.title
+        return f'{self.title}'
 
 
 class Work(models.Model):
@@ -56,7 +61,7 @@ class Work(models.Model):
 
     age_rating = models.IntegerField()
 
-    chapter = models.ManyToManyField(Chapter)
+    chapter = models.ManyToManyField(Chapter, related_name='works', null=True, blank=True)
 
     def get_absolute_url(self):
         return reverse('work-detail', kwargs={'slug': self.slug})
@@ -65,3 +70,6 @@ class Work(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super(Work, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.title}'

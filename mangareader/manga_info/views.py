@@ -19,10 +19,8 @@ class MangaDetailView(generic.DetailView):
 
 def chapter(request, slug, pk):
     chapter = Chapter.objects.get()
+    page = request.GET.get('page', '1')
     if chapter is not None:
         return render(request, 'manga_info/chapter.html', {'chapter': chapter})
     else:
         raise Http404('Chapter does not exist')
-
-
-
