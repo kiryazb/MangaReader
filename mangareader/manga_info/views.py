@@ -1,5 +1,5 @@
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from django.views import generic
 
@@ -18,8 +18,8 @@ class MangaDetailView(generic.DetailView):
 
 
 def chapter(request, slug, pk):
-    print(slug)
-    chapter = Chapter.objects.get()
+    work = get_object_or_404(Work, slug=slug)
+    chapter = Chapter.objects.filter(work=work, chapter=pk)
     page = request.GET.get('page', '1')
     if chapter is not None:
         return render(request, 'manga_info/chapter.html', {'chapter': chapter})

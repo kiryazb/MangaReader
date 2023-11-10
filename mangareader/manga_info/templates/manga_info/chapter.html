@@ -1,7 +1,8 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<p>{{chapter}}</p>
-{{ chapter.name }}
- <img src="{{ chapter.image.url }}" />
+{% for ch in chapter %}
+    {{ ch.title }}
+    <img src="{{ ch.image.url }}" />
+{% endfor %}
 {% endblock %}
