@@ -17,5 +17,14 @@ class MangaListView(generic.ListView):
         elif work_type == '2':
             return ["manga_list/manhwa_list.html"]
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        work_type = self.request.GET.get('type', '1')
+        if work_type == '1':
+            context['type'] = "Manga"
+        elif work_type == '2':
+            context['type'] = "Manhwa"
+        return context
+
     def get_queryset(self):
         return Work.objects.order_by('title')

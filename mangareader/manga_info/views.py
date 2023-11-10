@@ -18,6 +18,7 @@ class MangaDetailView(generic.DetailView):
 
 
 def chapter(request, slug, pk):
+    print(slug)
     chapter = Chapter.objects.get()
     page = request.GET.get('page', '1')
     if chapter is not None:
