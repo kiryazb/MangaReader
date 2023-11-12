@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from django.urls import reverse
 from django.utils.text import slugify
@@ -35,15 +37,21 @@ class Chapter(models.Model):
     title = models.CharField(max_length=50)
     chapter = models.IntegerField(default=0)
     work = models.ForeignKey('Work', related_name='chapters', on_delete=models.CASCADE, default='')
-    image = models.ImageField(upload_to=get_upload_path, default='defalut.jpg')
+    image = models.FileField(upload_to=get_upload_path)
 
     def __str__(self):
         return f'{self.title}'
 
 
+@receiver(post_save, sender=Chapter)
+def create_or_update_work(sender, instance, **kwargs):
+    if kwargs.get('created', False):
+        instance.work.chapter.add(instance)
+
+
 class Work(models.Model):
     title = models.CharField(max_length=200, unique=True, null=True)
-    slug = models.SlugField(max_length=255, unique=True)
+    slug = models.SlugField(max_length=255, null=True)
     type = models.ForeignKey(Type, on_delete=models.SET_NULL, null=True)
     release_year = models.IntegerField()
 
@@ -61,7 +69,7 @@ class Work(models.Model):
 
     age_rating = models.IntegerField()
 
-    chapter = models.ManyToManyField(Chapter, related_name='works', null=True, blank=True)
+    chapter = models.ManyToManyField(Chapter, related_name='works', blank=True)
 
     def get_absolute_url(self):
         return reverse('work-detail', kwargs={'slug': self.slug})
