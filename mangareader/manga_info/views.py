@@ -72,7 +72,12 @@ def chapter(request, slug, pk):
 
     if chapter is not None:
         index = temp_extracted_dir.split('\\').index('media')
-        image_url = '/' + '\\'.join(temp_extracted_dir.split('\\')[index:]).replace('\\', '/') + '/' + files_name[int(page) - 1]
-        return render(request, 'manga_info/chapter.html', {'url': image_url})
+        page_count = len(files_name)
+        image_url = '/' + '\\'.join(temp_extracted_dir.split('\\')[index:]).replace('\\', '/') + '/' + files_name[
+            int(page) - 1]
+        return render(request, 'manga_info/chapter.html', {'url': image_url, 'page': str(int(page) + 1),
+                                                           'current_page': int(page),
+                                                           'work': work, 'chapter': chapter,
+                                                           'page_count': page_count})
     else:
         raise Http404('Chapter does not exist')

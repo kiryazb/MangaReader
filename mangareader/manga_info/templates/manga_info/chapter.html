@@ -1,7 +1,13 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-{{ ch.title }}
-{{ url }}
-<img src="{{ url }}" />
+    {% if current_page < page_count %}
+        <a href="{% url 'chapter-detail' work.slug chapter.chapter %}?page={{ page }}">
+            <img src="{{ url }}" alt="{{ ch.title }}">
+        </a>
+    {% else %}
+        <a href="{% url 'work-detail' work.slug %}?page={{ page }}">
+            <img src="{{ url }}" alt="{{ ch.title }}">
+        </a>
+    {% endif %}
 {% endblock %}
