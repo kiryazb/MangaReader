@@ -2,7 +2,8 @@
 
 {% block content %}
   <h1>Title: {{ work.title }}</h1>
-  <p style="margin-left: 200px;"><a href="?section=chapters">Главы</a></p>
+  <a href="?section=chapters" style="margin-left: 300px;">Главы</a>
+  <a href="?section=comments" style="margin-left: 60px;">Комментарии</a>
   <p><strong>Тип:</strong> {{ work.type }}</p>
   <p><strong>Год релиза:</strong> {{ work.release_year }}</p>
   <p><strong>Статус тайтла:</strong> {{ work.work_status }}</p>

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comment
+from .models import Comment, CommentWorkMainPage
 
 
 class CommentForm(forms.ModelForm):
@@ -10,4 +10,13 @@ class CommentForm(forms.ModelForm):
             'work': forms.HiddenInput(),
             'chapter': forms.HiddenInput(),
             'page': forms.HiddenInput(),
+        }
+
+
+class CommentWorkMainPageForm(forms.ModelForm):
+    class Meta:
+        model = CommentWorkMainPage
+        fields = ['text']
+        widgets = {
+            'work': forms.HiddenInput()
         }

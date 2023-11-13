@@ -1,16 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    {% if current_page < page_count %}
-        <a href="{% url 'chapter-detail' work.slug chapter.chapter %}?page={{ page }}">
-            <img src="{{ url }}" alt="{{ ch.title }}">
-        </a>
-    {% else %}
-        <a href="{% url 'work-detail' work.slug %}?page={{ page }}">
-            <img src="{{ url }}" alt="{{ ch.title }}">
-        </a>
-    {% endif %}
-    <body>
+  <body>
 
         <style>
             #comment-form {
@@ -34,6 +25,7 @@
         </div>
 
     </body>
+
     {% for comment in comments %}
         <p style="text-align: center;">{{ comment.text }}</p>
     {% endfor %}

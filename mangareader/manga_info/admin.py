@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Type, Author, Imprint, Work, Chapter, Comment
+from .models import Type, Author, Imprint, Work, Chapter, Comment, CommentWorkMainPage
 
 admin.site.register(Type)
 admin.site.register(Imprint)
@@ -9,6 +9,11 @@ admin.site.register(Imprint)
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('text', 'work', 'chapter', 'page')
+
+
+@admin.register(CommentWorkMainPage)
+class CommentWorkMainPageAdmin(admin.ModelAdmin):
+    list_display = ('text', 'work')
 
 
 class ChapterAdmin(admin.ModelAdmin):
