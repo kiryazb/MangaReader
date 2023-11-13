@@ -10,4 +10,28 @@
             <img src="{{ url }}" alt="{{ ch.title }}">
         </a>
     {% endif %}
+    <body>
+
+        <style>
+            #comment-form {
+                text-align: center;
+                margin: 20px auto;
+                max-width: 600px;
+            }
+
+            #comment-form form {
+                margin: 0;
+            }
+        </style>
+
+        <div id="comment-form">
+            <h2>Оставить комментарий</h2>
+            <form action="#" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Отправить комментарий</button>
+            </form>
+        </div>
+
+    </body>
 {% endblock %}

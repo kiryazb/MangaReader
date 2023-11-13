@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 
 from django.views import generic
 
+from .forms import CommentForm
 from .models import Work, Chapter
 
 from zipfile import ZipFile
@@ -19,17 +20,6 @@ class MangaDetailView(generic.DetailView):
             return 'manga_info/manga_info.html'
         if section == 'chapters':
             return 'manga_info/chapters.html'
-
-
-# def chapter(request, slug, pk):
-#     work = get_object_or_404(Work, slug=slug)
-#     chapter = Chapter.objects.filter(work=work, chapter=pk)
-#     page = request.GET.get('page', '1')
-#     print(Chapter.image)
-#     # if chapter is not None:
-#     #     return render(request, 'manga_info/chapter.html', {'chapter': chapter})
-#     # else:
-#     #     raise Http404('Chapter does not exist')
 
 
 def chapter(request, slug, pk):
@@ -71,6 +61,15 @@ def chapter(request, slug, pk):
             files_name.append(files)
 
     if chapter is not None:
+        if request.method == 'POST':
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                form.instance.work = work
+                form.instance.chapter = pk
+                form.instance.page = page
+                form.save()
+        else:
+            form = CommentForm()
         index = temp_extracted_dir.split('\\').index('media')
         page_count = len(files_name)
         image_url = '/' + '\\'.join(temp_extracted_dir.split('\\')[index:]).replace('\\', '/') + '/' + files_name[
@@ -78,6 +77,6 @@ def chapter(request, slug, pk):
         return render(request, 'manga_info/chapter.html', {'url': image_url, 'page': str(int(page) + 1),
                                                            'current_page': int(page),
                                                            'work': work, 'chapter': chapter,
-                                                           'page_count': page_count})
+                                                           'page_count': page_count, 'form': form},)
     else:
         raise Http404('Chapter does not exist')
