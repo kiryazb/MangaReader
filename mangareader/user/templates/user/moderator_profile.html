@@ -1,0 +1,9 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div style="margin-top: 200px;margin-left: 50px;">
+  <p><strong>Имя пользователя:</strong> {{ customuser.username }}</p>
+  <p><strong>Подписчики:</strong> {{ customuser.subscribers }}</p>
+  <a href="{% url 'moderator-panel' user.username %}" style="position: absolute; left: 600px; top: 200px;">Панель Модератора</a>
+</div>
+{% endblock %}

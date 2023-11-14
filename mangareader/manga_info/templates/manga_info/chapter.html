@@ -35,6 +35,9 @@
 
     </body>
     {% for comment in comments %}
-        <p style="text-align: center;">{{ comment.text }}</p>
+        <div style="text-align: center; margin-bottom: 10px;">
+        <a href="{% url 'profile' user.username %}" style="display: inline-block;">{{ comment.author.username }}</a>
+        <p style="display: inline-block;">{{ comment.text }}</p>
+    </div>
     {% endfor %}
 {% endblock %}

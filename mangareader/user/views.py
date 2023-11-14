@@ -46,4 +46,15 @@ def custom_logout(request):
 class UserDetailView(generic.DetailView):
     slug_field = 'username'
     model = CustomUser
-    template_name = "user/profile.html"
+
+    def get_template_names(self):
+        user = self.request.user
+        group_names = user.groups.values_list('name', flat=True)
+        if 'Moderator' in group_names:
+            return 'user/moderator_profile.html'
+        return "user/profile.html"
+
+
+def moderator_panel(request, slug):
+    print("-------------------------------")
+    return render(request, 'user/moderator_panel.html')

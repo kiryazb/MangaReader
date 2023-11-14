@@ -8,5 +8,6 @@ from . import views
 
 
 urlpatterns = [
+    path('<slug:slug>/moderator/', views.moderator_panel, name='moderator-panel'),
     path('<slug:slug>', views.UserDetailView.as_view(), name='profile'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

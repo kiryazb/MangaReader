@@ -21,6 +21,9 @@
     {% if user.is_authenticated %}
     <a href="{% url 'logout' %}" class="right-top-button-login">выход</a>
     <a href="{% url 'profile' user.username %}" class="right-top-button-register">{{ user.username }}</a>
+    {% if user.is_superuser %}
+    <a href="{% url 'admin:index' %}" class="right-top-button-admin">Админ Панель</a>
+    {% endif %}
     {% else %}
     <a href="{% url 'login' %}" class="right-top-button-login">вход</a>
     <a href="{% url 'register' %}" class="right-top-button-register">регистрация</a>

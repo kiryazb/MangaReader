@@ -2,8 +2,11 @@ from django.contrib import admin
 
 from .models import Type, Author, Imprint, Work, Chapter, Comment, CommentWorkMainPage
 
+from django.contrib.auth.models import Permission
+
 admin.site.register(Type)
 admin.site.register(Imprint)
+admin.site.register(Permission)
 
 
 @admin.register(Comment)

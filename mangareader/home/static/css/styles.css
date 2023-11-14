@@ -71,3 +71,10 @@
         width: 15%; /* Боковая панель занимает 15% ширины страницы */
         float: left;
     }
+
+
+        .right-top-button-admin {
+            position: absolute;
+            right: 250px;
+            top: 20px;
+        }

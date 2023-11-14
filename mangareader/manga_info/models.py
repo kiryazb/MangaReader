@@ -5,6 +5,8 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.text import slugify
 
+from user.models import CustomUser
+
 
 class Type(models.Model):
     name = models.CharField(max_length=15, help_text='Enter type of work')
@@ -20,6 +22,9 @@ class Author(models.Model):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
+
+    class Meta:
+        permissions = (("can_change_authors", "add/delete/change authors"),)
 
 
 class Imprint(models.Model):
@@ -88,6 +93,7 @@ class Comment(models.Model):
     work = models.ForeignKey(Work, on_delete=models.SET_NULL, null=True)
     chapter = models.IntegerField()
     page = models.IntegerField()
+    author = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.text
@@ -96,6 +102,7 @@ class Comment(models.Model):
 class CommentWorkMainPage(models.Model):
     text = models.TextField()
     work = models.ForeignKey(Work, on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, default=None)
 
     def __str__(self):
         return self.text
