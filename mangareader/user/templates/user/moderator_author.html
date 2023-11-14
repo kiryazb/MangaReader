@@ -1,0 +1,9 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div style="margin-top: 200px;margin-left: 50px;">
+  <a href="{% url 'add_author' user.username %}" style="position: absolute; left: 600px; top: 200px;">Добавить автора</a>
+  <a href="#" style="position: absolute; left: 600px; top: 250px;">Удалить автора</a>
+  <a href="#" style="position: absolute; left: 600px; top: 300px;">Изменить автора</a>
+</div>
+{% endblock %}

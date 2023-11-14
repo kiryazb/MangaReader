@@ -1,5 +1,6 @@
+from django.http import Http404
 from django.shortcuts import render, redirect
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, AddAuthorForm
 
 from django.views import generic
 
@@ -56,5 +57,18 @@ class UserDetailView(generic.DetailView):
 
 
 def moderator_panel(request, slug):
-    print("-------------------------------")
     return render(request, 'user/moderator_panel.html')
+
+
+def moderator_author(request, slug):
+    return render(request, 'user/moderator_author.html')
+
+
+def add_author(request, slug):
+    if request.method == 'POST':
+        form = AddAuthorForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = AddAuthorForm()
+    return render(request, 'user/add_author.html', {'form': form})
