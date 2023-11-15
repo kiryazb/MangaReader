@@ -7,13 +7,13 @@
     <p style="color: red;">Такой автор уже существует</p>
     {% endif %}
   {% if is_exist == 1 %}
-      <p style="color: green;">Автор успешно добавлен.</p>
+      <p style="color: green;">Автор успешно Изменен.</p>
   {% endif %}
     <div style="margin-top: 20px;">
     <form action="#" method="post">
       {% csrf_token %}
       {{ form.as_p }}
-      <button type="submit">Добавить</button>
+      <button type="submit">Изменить</button>
     </form>
   </div>
 </body>
