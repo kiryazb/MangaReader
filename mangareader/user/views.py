@@ -1,13 +1,15 @@
+from django.contrib.auth.decorators import user_passes_test
 from django.http import Http404
 from django.shortcuts import render, redirect
-from .forms import RegistrationForm, LoginForm, AddAuthorForm, ChangeAuthorForm
+from .forms import RegistrationForm, LoginForm, AddAuthorForm, ChangeAuthorForm, DeleteAuthorForm, AddChapterForm, \
+    ChangeChapterForm
 
 from django.views import generic
 
 from django.contrib.auth import authenticate, login, logout
 
 from .models import CustomUser
-from manga_info.models import Author
+from manga_info.models import Author, Chapter
 
 
 def register(request):
@@ -57,14 +59,22 @@ class UserDetailView(generic.DetailView):
         return "user/profile.html"
 
 
+def is_moderator(user):
+    print()
+    return user.groups.filter(name='Moderator').exists()
+
+
+@user_passes_test(is_moderator, login_url='/home/')
 def moderator_panel(request, slug):
     return render(request, 'user/moderator_panel.html')
 
 
+@user_passes_test(is_moderator, login_url='/home/')
 def moderator_author(request, slug):
     return render(request, 'user/moderator_author.html')
 
 
+@user_passes_test(is_moderator, login_url='/home/')
 def add_author(request, slug):
     authors = Author.objects.all()
     is_exist = 0
@@ -73,8 +83,8 @@ def add_author(request, slug):
         if form.is_valid():
             author_name = form.cleaned_data['first_name']
             author_last = form.cleaned_data['last_name']
-            authors_exist = Author.objects.filter(first_name__icontains=author_name,
-                                                  last_name__icontains=author_last).exists()
+            authors_exist = Author.objects.filter(first_name=author_name,
+                                                  last_name=author_last).exists()
             if not authors_exist:
                 is_exist = 1
                 form.save()
@@ -85,21 +95,20 @@ def add_author(request, slug):
     return render(request, 'user/add_author.html', {'form': form, 'is_exist': is_exist})
 
 
+@user_passes_test(is_moderator, login_url='/home/')
 def change_author(request, slug):
     authors = Author.objects.all()
     is_exist = 0
     if request.method == 'POST':
         form = ChangeAuthorForm(request.POST)
-        print('------------------')
         if form.is_valid():
             author_old_name = form.cleaned_data['old_name']
             author_old_last = form.cleaned_data['old_last']
-            print(f'---------------------------{author_old_name}-------{author_old_last}')
             author_name = form.cleaned_data['first_name']
             author_last = form.cleaned_data['last_name']
             author_subscribers = form.cleaned_data['subscribers']
-            authors_exist = Author.objects.filter(first_name__icontains=author_old_name,
-                                                  last_name__icontains=author_old_last).exists()
+            authors_exist = Author.objects.filter(first_name=author_old_name,
+                                                  last_name=author_old_last).exists()
             if authors_exist:
                 is_exist = 1
                 Author.objects.filter(first_name=author_old_name,
@@ -110,3 +119,84 @@ def change_author(request, slug):
     else:
         form = ChangeAuthorForm()
     return render(request, 'user/change_author.html', {'form': form, 'is_exist': is_exist})
+
+
+@user_passes_test(is_moderator, login_url='/home/')
+def delete_author(request, slug):
+    authors = Author.objects.all()
+    print(authors)
+    is_exist = 0
+    if request.method == 'POST':
+        form = DeleteAuthorForm(request.POST)
+        if form.is_valid():
+            author_name = form.cleaned_data['first_name']
+            author_last = form.cleaned_data['last_name']
+            authors_exist = Author.objects.filter(first_name=author_name,
+                                                  last_name=author_last).exists()
+            print(authors_exist)
+            if authors_exist:
+                is_exist = 1
+                Author.objects.filter(first_name=author_name,
+                                      last_name=author_last).delete()
+            else:
+                is_exist = -1
+    else:
+        form = DeleteAuthorForm()
+
+    return render(request, 'user/delete_author.html', {'form': form, 'is_exist': is_exist})
+
+
+@user_passes_test(is_moderator, login_url='/home/')
+def moderator_chapter(request, slug):
+    return render(request, 'user/moderator_chapter.html')
+
+
+@user_passes_test(is_moderator, login_url='/home/')
+def add_chapter(request, slug):
+    chapters = Chapter.objects.all()
+    is_exist = 0
+    if request.method == 'POST':
+        form = AddChapterForm(request.POST, request.FILES)
+        if form.is_valid():
+            chapter_title = form.cleaned_data['title']
+            chapter_work = form.cleaned_data['work']
+            chapters_exist = Chapter.objects.filter(title=chapter_title, work=chapter_work).exists()
+            if not chapters_exist:
+                is_exist = 1
+                form.save()
+            else:
+                is_exist = -1
+    else:
+        form = AddChapterForm()
+    return render(request, 'user/add_chapter.html', {'form': form, 'is_exist': is_exist})
+
+
+@user_passes_test(is_moderator, login_url='/home/')
+def change_chapter(request, slug):
+    chapters = Chapter.objects.all()
+    is_exist = 0
+    if request.method == 'POST':
+        form = ChangeChapterForm(request.POST, request.FILES)
+        if form.is_valid():
+            chapter_old_title = form.cleaned_data['old_title']
+            chapter_old_work = form.cleaned_data['work']
+            chapter_title = form.cleaned_data['title']
+            chapter_work = form.cleaned_data['work']
+            chapter_chapter = form.cleaned_data['chapter']
+            chapter_image = form.cleaned_data['image']
+            chapters_exist = Chapter.objects.filter(title=chapter_old_title,
+                                                    work=chapter_old_work).exists()
+            print(chapter_image)
+            if chapters_exist:
+                is_exist = 1
+                Chapter.objects.filter(title=chapter_old_title,
+                                       work=chapter_old_work).update(title=chapter_title, work=chapter_work)
+
+                chapter_instance = Chapter.objects.get(title=chapter_title, work=chapter_work)
+                chapter_instance.image.delete()
+                chapter_instance.image.save(chapter_image.name, chapter_image, save=True)
+            else:
+                is_exist = -1
+    else:
+        form = ChangeChapterForm()
+    return render(request, 'user/change_chapter.html', {'form': form, 'is_exist': is_exist})

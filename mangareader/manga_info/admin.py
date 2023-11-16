@@ -19,11 +19,10 @@ class CommentWorkMainPageAdmin(admin.ModelAdmin):
     list_display = ('text', 'work')
 
 
+@admin.register(Chapter)
 class ChapterAdmin(admin.ModelAdmin):
     readonly_fields = ('id',)
-
-
-admin.site.register(Chapter, ChapterAdmin)
+    list_display = ('title', 'work', 'chapter')
 
 
 @admin.register(Author)

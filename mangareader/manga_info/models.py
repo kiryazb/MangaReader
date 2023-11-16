@@ -41,7 +41,7 @@ def get_upload_path(instance, filename):
 class Chapter(models.Model):
     title = models.CharField(max_length=50)
     chapter = models.IntegerField(default=0)
-    work = models.ForeignKey('Work', related_name='chapters', on_delete=models.CASCADE, default='')
+    work = models.ForeignKey('Work', related_name='chapters', on_delete=models.CASCADE)
     image = models.FileField(upload_to=get_upload_path)
 
     def __str__(self):
