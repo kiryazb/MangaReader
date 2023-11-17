@@ -4,6 +4,6 @@
 <div style="margin-top: 200px;margin-left: 50px;">
   <a href="{% url 'add_chapter' user.username %}" style="position: absolute; left: 600px; top: 200px;">Добавить главу</a>
   <a href="{% url 'change_chapter' user.username %}" style="position: absolute; left: 600px; top: 250px;">Изменить главу</a>
-  <a href="#" style="position: absolute; left: 600px; top: 300px;">Удалить главу</a>
+  <a href="{% url 'delete_chapter' user.username %}" style="position: absolute; left: 600px; top: 300px;">Удалить главу</a>
 </div>
 {% endblock %}

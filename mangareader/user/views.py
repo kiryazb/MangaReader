@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.http import Http404
 from django.shortcuts import render, redirect
 from .forms import RegistrationForm, LoginForm, AddAuthorForm, ChangeAuthorForm, DeleteAuthorForm, AddChapterForm, \
-    ChangeChapterForm
+    ChangeChapterForm, DeleteChapterForm
 
 from django.views import generic
 
@@ -186,7 +186,6 @@ def change_chapter(request, slug):
             chapter_image = form.cleaned_data['image']
             chapters_exist = Chapter.objects.filter(title=chapter_old_title,
                                                     work=chapter_old_work).exists()
-            print(chapter_image)
             if chapters_exist:
                 is_exist = 1
                 Chapter.objects.filter(title=chapter_old_title,
@@ -200,3 +199,24 @@ def change_chapter(request, slug):
     else:
         form = ChangeChapterForm()
     return render(request, 'user/change_chapter.html', {'form': form, 'is_exist': is_exist})
+
+
+@user_passes_test(is_moderator, login_url='/home/')
+def delete_chapter(request, slug):
+    chapters = Chapter.objects.all()
+    is_exist = 0
+    if request.method == 'POST':
+        form = DeleteChapterForm(request.POST, request.FILES)
+        if form.is_valid():
+            chapter_title = form.cleaned_data['title']
+            chapter_work = form.cleaned_data['work']
+            chapters_exist = Chapter.objects.filter(title=chapter_title, work=chapter_work).exists()
+            if chapters_exist:
+                is_exist = 1
+                Chapter.objects.filter(title=chapter_title,
+                                        work=chapter_work).delete()
+            else:
+                is_exist = -1
+    else:
+        form = DeleteChapterForm()
+    return render(request, 'user/delete_chapter.html', {'form': form, 'is_exist': is_exist})

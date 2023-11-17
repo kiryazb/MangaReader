@@ -60,3 +60,13 @@ class ChangeChapterForm(forms.ModelForm):
         self.fields['work'] = forms.ModelChoiceField(queryset=Work.objects.all())
 
     field_order = ['old_title', 'old_work', 'title', 'chapter', 'work', 'image']
+
+
+class DeleteChapterForm(forms.ModelForm):
+    class Meta:
+        model = Chapter
+        fields = ['title', 'chapter', 'work']
+
+    def __init__(self, *args, **kwargs):
+        super(DeleteChapterForm, self).__init__(*args, **kwargs)
+        self.fields['work'] = forms.ModelChoiceField(queryset=Work.objects.all())
