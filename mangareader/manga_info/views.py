@@ -56,6 +56,17 @@ def chapter(request, slug, pk):
 
     if os.path.exists(zip_file_path):
 
+        for filename in os.listdir(temp_extracted_dir):
+            print('------------------------')
+            print(filename, zip_file_path.split('\\')[-1])
+            if filename != zip_file_path.split('\\')[-1]:
+                file_path = os.path.join(temp_extracted_dir, filename)
+                try:
+                    if os.path.isfile(file_path):
+                        os.remove(file_path)
+                except Exception as e:
+                    print(f'Ошибка при удалении файла {file_path}. {e}')
+
         with ZipFile(zip_file_path, "r") as myzip:
             myzip.extractall(temp_extracted_dir)
 
@@ -103,6 +114,7 @@ def chapter(request, slug, pk):
         return render(request, 'manga_info/chapter.html', {'url': image_url, 'page': str(int(page) + 1),
                                                            'current_page': int(page),
                                                            'work': work, 'chapter': chapter,
-                                                           'page_count': page_count, 'form': form, 'comments': comments})
+                                                           'page_count': page_count, 'form': form,
+                                                           'comments': comments})
     else:
         raise Http404('Chapter does not exist')
