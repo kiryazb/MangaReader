@@ -36,7 +36,7 @@ class MangaDetailView(generic.DetailView):
         form = CommentWorkMainPageForm(request.POST)
         if form.is_valid():
             form.instance.work = get_object_or_404(Work, slug=slug)
-            form.instance.author = form.instance.author = request.user
+            form.instance.author = request.user
             form.save()
             redirect_url = reverse('work-detail', kwargs={'slug': slug}) + '?section=comments'
             return redirect(redirect_url)

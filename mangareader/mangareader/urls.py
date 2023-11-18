@@ -20,6 +20,7 @@ urlpatterns = [
     path('login/', custom_login, name='login'),
     path('logout/', custom_logout, name='logout'),
     path('profile/', include('user.urls')),
+    path('forum/', include('forum.urls')),
     path('<slug:slug>/', include('manga_info.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

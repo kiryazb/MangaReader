@@ -10,7 +10,7 @@ class CommentForm(forms.ModelForm):
             'work': forms.HiddenInput(),
             'chapter': forms.HiddenInput(),
             'page': forms.HiddenInput(),
-            'author': forms.HiddenInput(),
+            'Author': forms.HiddenInput(),
         }
 
 

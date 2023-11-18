@@ -31,7 +31,8 @@ INSTALLED_APPS = [
     'home',
     'manga_list',
     'manga_info',
-    'user'
+    'user',
+    'forum',
 ]
 
 MIDDLEWARE = [

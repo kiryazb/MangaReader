@@ -1,0 +1,11 @@
+{% extends "list_template.html" %}
+
+{% block content %}
+{% if topic_list %}
+    <div style="text-align: center; margin-top: 200px;">
+    {% for topic in topic_list %}
+        <a href="{% url 'topic-detail' topic.slug %}" style="display: block; margin-bottom: 10px;">{{ topic.title }}</a>
+    {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}
