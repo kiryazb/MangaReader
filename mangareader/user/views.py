@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.http import Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import RegistrationForm, LoginForm, AddAuthorForm, ChangeAuthorForm, DeleteAuthorForm, AddChapterForm, \
     ChangeChapterForm, DeleteChapterForm
 
@@ -9,7 +9,7 @@ from django.views import generic
 from django.contrib.auth import authenticate, login, logout
 
 from .models import CustomUser
-from manga_info.models import Author, Chapter
+from manga_info.models import Author, Chapter, Work
 
 
 def register(request):
@@ -124,7 +124,6 @@ def change_author(request, slug):
 @user_passes_test(is_moderator, login_url='/home/')
 def delete_author(request, slug):
     authors = Author.objects.all()
-    print(authors)
     is_exist = 0
     if request.method == 'POST':
         form = DeleteAuthorForm(request.POST)
@@ -133,7 +132,6 @@ def delete_author(request, slug):
             author_last = form.cleaned_data['last_name']
             authors_exist = Author.objects.filter(first_name=author_name,
                                                   last_name=author_last).exists()
-            print(authors_exist)
             if authors_exist:
                 is_exist = 1
                 Author.objects.filter(first_name=author_name,
@@ -151,6 +149,17 @@ def moderator_chapter(request, slug):
     return render(request, 'user/moderator_chapter.html')
 
 
+def manga_updates(request, work, chapter, slug):
+    manga_updates = request.session.get('manga_updates', [''] * 5)
+    last_pos = request.session.get('last_pos', 0)
+    manga_updates[last_pos] = (work, chapter, slug)
+    request.session['manga_updates'] = manga_updates
+    if last_pos + 1 < 5:
+        request.session['last_pos'] = last_pos + 1
+    else:
+        request.session['last_pos'] = 0
+
+
 @user_passes_test(is_moderator, login_url='/home/')
 def add_chapter(request, slug):
     chapters = Chapter.objects.all()
@@ -158,11 +167,15 @@ def add_chapter(request, slug):
     if request.method == 'POST':
         form = AddChapterForm(request.POST, request.FILES)
         if form.is_valid():
+
             chapter_title = form.cleaned_data['title']
             chapter_work = form.cleaned_data['work']
+            chapter_chapter = form.cleaned_data['chapter']
             chapters_exist = Chapter.objects.filter(title=chapter_title, work=chapter_work).exists()
             if not chapters_exist:
                 is_exist = 1
+                manga_updates(request, chapter_work.title, chapter_chapter, chapter_work.slug)
+                print(f'-------------{request.session["manga_updates"]}')
                 form.save()
             else:
                 is_exist = -1
@@ -214,7 +227,7 @@ def delete_chapter(request, slug):
             if chapters_exist:
                 is_exist = 1
                 Chapter.objects.filter(title=chapter_title,
-                                        work=chapter_work).delete()
+                                       work=chapter_work).delete()
             else:
                 is_exist = -1
     else:

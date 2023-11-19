@@ -1,5 +1,11 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<h1>MangaReader home page</h1>
+  <h1>MangaReader home page</h1>
+  <div style="text-align: center;">
+    <p><strong>Последние обновления работ</strong></p>
+    {% for update in updates %}
+        <div><a href="{% url 'chapter-detail' update.2 update.1 %}">{{ update.0 }} Глава {{ update.1 }}</a></div>
+    {% endfor %}
+  </div>
 {% endblock %}
