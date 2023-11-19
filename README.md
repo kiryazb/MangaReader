@@ -1,1 +1,1 @@
-Project on Django framework
+Project on Django framework with Postgresql database
