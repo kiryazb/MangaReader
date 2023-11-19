@@ -28,7 +28,7 @@ class MangaDetailView(generic.DetailView):
         slug = self.kwargs.get('slug')
         context = super().get_context_data(**kwargs)
         context['form'] = CommentWorkMainPageForm()
-        context['comments'] = CommentWorkMainPage.objects.filter(work__slug=slug)
+        context['comments'] = CommentWorkMainPage.objects.filter(work__slug=slug)[::-1]
         return context
 
     def post(self, request, *args, **kwargs):
@@ -110,7 +110,7 @@ def chapter(request, slug, pk):
         page_count = len(files_name)
         image_url = '/' + '\\'.join(temp_extracted_dir.split('\\')[index:]).replace('\\', '/') + '/' + files_name[
             int(page) - 1]
-        comments = Comment.objects.filter(work__slug=slug, chapter=pk, page=page)
+        comments = Comment.objects.filter(work__slug=slug, chapter=pk, page=page)[::-1]
         return render(request, 'manga_info/chapter.html', {'url': image_url, 'page': str(int(page) + 1),
                                                            'current_page': int(page),
                                                            'work': work, 'chapter': chapter,
